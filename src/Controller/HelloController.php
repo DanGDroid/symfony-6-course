@@ -2,12 +2,27 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
+use App\Entity\MicroPost;
+use App\Entity\User;
+use App\Entity\UserProfile;
+use App\Repository\MicroPostRepository;
+use App\Repository\UserProfileRepository;
+use DateTime;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Doctrine\ORM\EntityManagerInterface;
 
 class HelloController extends AbstractController
 {
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
     private array $messages = [
         ['message' => 'Hello World', 'created' => '2024-01-02'],
         ['message' => 'Bonjour le monde', 'created' => '2024-01-03'],
@@ -23,12 +38,48 @@ class HelloController extends AbstractController
         ['message' => 'Chào thế giới', 'created' => '2024-01-12'],
     ];
 
-    #[Route('/{limit<\d+>?12}', name: 'app_index')]
-    public function index(int $limit): Response
+    #[Route('/', name: 'app_index')]
+    public function index(UserProfileRepository $profiles, MicroPostRepository $posts): Response
     {
+        // $user = new User();
+        // $user->setEmail('email1@email.com');
+        // $user->setPassword('password');
+
+        // $profile = new UserProfile();
+        // $profile->setUser($user);
+        
+        // $this->entityManager->persist($profile);
+        // $this->entityManager->flush();
+
+        // $profile = $profiles->find(1);
+        // $this->entityManager->remove($profile);
+        // $this->entityManager->flush();
+
+
+        // $post = new MicroPost();
+        // $post->setTitle('Hello');
+        // $post->setText('Hello');
+        // $post->setCreatedAt(new DateTime());
+
+        // $post = $posts->find(1);
+        // $comment = $post->getComments()[0];
+        // $post->removeComment($comment);
+
+        // $comment = new Comment();
+        // $comment->setText('Hello');
+        // // $comment->setPost($post);
+        // $post->addComment($comment);
+
+        //   $this->entityManager->persist($comment);
+        // $this->entityManager->flush();
+
+        // $this->entityManager->persist($post);
+        // $this->entityManager->flush();
+
+        // dd($post);
         return $this->render('hello/index.html.twig', [
             'messages' => $this->messages,
-            'limit' => $limit,
+            'limit' => 12,
         ]
         );
     }
